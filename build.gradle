@@ -1,0 +1,47 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
+    }
+    
+}
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'docker'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'brolle75'
+version = '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'com.amazonaws:aws-java-sdk-dynamodb:1.9.0'
+    compile 'de.grundid.opendatalab:geojson-jackson:1.6'
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+  push = true
+  applicationName = jar.baseName
+  dockerfile = file('Dockerfile')
+  doFirst {
+    copy {
+      from jar
+      into stageDir
+    }
+  }
+}
