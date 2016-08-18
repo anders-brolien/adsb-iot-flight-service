@@ -72,6 +72,7 @@ public class FlightController {
 					Feature current = features.get(f.getId());
 					current.setProperty("device", f.getProperty("device") + " " + current.getProperty("device"));
 				} else {
+					features.put(f.getId(), f);
 					result.add(f);									
 				}				
 			}
