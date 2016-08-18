@@ -36,7 +36,7 @@ public class FlightCleanup {
 				for (Map<String, AttributeValue> item : scanResult.getItems()) {
 					Map<String, AttributeValue> payload = item.get("payload").getM();
 					long timestamp = Long.parseLong(payload.get("timestamp").getN());
-					String hex = payload.get("hex").getS();
+					String hex = item.get("hex").getS();
 					
 					if (now - timestamp > 2 * 60 * 1000) {
 						Map<String, AttributeValue> key = new HashMap<>();
